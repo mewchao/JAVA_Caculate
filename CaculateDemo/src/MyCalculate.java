@@ -6,136 +6,182 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JButton;
 import javax.swing.JTextField;
 
 public class MyCalculate {
     private JFrame jf;
-    private JPanel jp1, jp2;
+    private JPanel jp1 ,jp2, jp3;
+
+    private JMenuBar menuBar;
+    private JMenu viewMenu;
+    private JMenu editMenu;
+    private JMenu helpMenu;
+
     private JTextField jtf;
     private JButton[] jbs;
-    private JButton c_jbs;
     private String str0 = "0";
-    private String flag=null;
+    private String flag = null;
     private double s1 = 0.0;
     private double s2 = 0.0;
 
+    // 创建 MyCalculate 构造函数
     public MyCalculate() {
-        jf = new JFrame("计算器");
+        // 初始化 JFrame、JPanel 和 JTextField
+        jf = new JFrame("JAVA计算器");
         jp1 = new JPanel();
-        jtf = new JTextField(14);
-        jbs = new JButton[16];
-        c_jbs = new JButton("C");
-        String s = "123+456-789*0.=/";
-        for (int i = 0; i < jbs.length; i++) {
-            jbs[i] = new JButton(s.substring(i, i + 1));
-        }
+        jp2 = new JPanel();
+        jp3 = new JPanel();
+
+         menuBar = new JMenuBar();
+         viewMenu = new JMenu("查看");
+         editMenu = new JMenu("编辑");
+         helpMenu = new JMenu("帮助");
+
+
+        JMenuItem copyItem = new JMenuItem("复制");
+        JMenuItem pasteItem = new JMenuItem("粘贴");
+
+        editMenu.add(copyItem);
+        editMenu.add(pasteItem);
+
+        menuBar.add(viewMenu);
+        menuBar.add(editMenu);
+        menuBar.add(helpMenu);
+        jf.setJMenuBar(menuBar);
+
+        jtf = new JTextField(25);
+
+        // 为按钮数组赋值
+        jbs = new JButton[30];
+
+        // 逐个创建 JButton 对象，文本内容为对应位置的字符
+        jbs[0] = new JButton("MC");
+        jbs[1] = new JButton("MR");
+        jbs[2] = new JButton("MS");
+        jbs[3] = new JButton("M+");
+        jbs[4] = new JButton("M-");
+        jbs[5] = new JButton("<-");
+        jbs[6] = new JButton("CE");
+        jbs[7] = new JButton("C");
+        jbs[8] = new JButton("+-");
+        jbs[9] = new JButton("√");
+        jbs[10] = new JButton("7");
+        jbs[11] = new JButton("8");
+        jbs[12] = new JButton("9");
+        jbs[13] = new JButton("/");
+        jbs[14] = new JButton("%");
+        jbs[15] = new JButton("4");
+        jbs[16] = new JButton("5");
+        jbs[17] = new JButton("6");
+        jbs[18] = new JButton("*");
+        jbs[19] = new JButton("1/x");
+        jbs[20] = new JButton("1");
+        jbs[21] = new JButton("2");
+        jbs[22] = new JButton("3");
+        jbs[23] = new JButton("-");
+        jbs[24] = new JButton("=");
+        jbs[25] = new JButton("0");
+        jbs[26] = new JButton("0");
+        jbs[27] = new JButton(".");
+        jbs[28] = new JButton("+");
+        jbs[29] = new JButton("=");
+
         init();
         doit();
     }
 
     private void init() {
-        jp1.setLayout(new FlowLayout());
-        jp1.add(jtf);
-        jp1.add(c_jbs);
         jtf.setEditable(true);
-
         jtf.setText("0");
-        jp2 = new JPanel();
-        jp2.setLayout(new GridLayout(4, 4));
+        jp2.setLayout(new FlowLayout());
+        jp2.add(jtf);
+
+        jp3.setLayout(new GridLayout(6, 5));
         for (int i = 0; i < jbs.length; i++) {
-            jp2.add(jbs[i]);
+            // 添加按钮
+            jp3.add(jbs[i]);
         }
-        jf.add(jp1, BorderLayout.NORTH);
-        jf.add(jp2, BorderLayout.CENTER);
+        jf.add(jp2, BorderLayout.NORTH);
+        jf.add(jp3, BorderLayout.CENTER);
     }
 
     public void showMe() {
         jf.setVisible(true);
-        jf.setSize(276, 210);
-        // jf.pack(); //�Զ�ƥ���С
+        jf.setSize(350, 350);
         jf.setLocation(200, 200);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFontAndColor();
     }
 
     private void setFontAndColor() {
-        Font f = new Font("����", Font.BOLD, 14);
+        Font f = new Font("Dialog", Font.BOLD, 16);
         jtf.setFont(f);
         Color c = new Color(63, 178, 198);
-        c_jbs.setBackground(c);
-        jp1.setBackground(Color.DARK_GRAY);
+        jp2.setBackground(Color.DARK_GRAY);
         for (int i = 0; i < jbs.length; i++) {
             jbs[i].setBackground(Color.gray);
         }
     }
 
     public void doit() {
-        c_jbs.addActionListener(new ActionListener() {
+        ActionListener actionListener1 = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = e.getActionCommand();
-                if (str.equals("C")) {
+                if (str.equals("+")) {
+                    s2=s1;
+                    s1=0.0;
                     str0 = "0";
-                    s1 = 0.0;
-                    s2 = 0.0;
-                    flag=null;
-                    jtf.setText(str0);
-                }
-            }
-        });
-        for (int i = 0; i < jbs.length; i++) {
-            jbs[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    // �õ���ť�ϵ�����
-                    String str = e.getActionCommand();
-                    if (str.equals("+")) {
-                        s2=s1;
-                        s1=0.0;
-                        str0 = "0";
-                        flag="+";
+                    flag="+";
+                    s1=s2+s1;
+                } else if (str.equals("-")) {
+                    s2=s1;
+                    s1=0.0;
+                    str0 = "0";
+                    flag="-";
+                    s1=s2-s1;
+                } else if (str.equals("*")) {
+                    s2=s1;
+                    s1=0.0;
+                    str0 = "0";
+                    flag="*";
+                    s1=s2*s1;
+                } else if (str.equals("/")) {
+                    s2=s1;
+                    s1=0.0;
+                    str0 = "0";
+                    flag="/";
+                    s1=s2/s1;
+                } else if (str.equals("=")) {
+                    if(flag.equals("+")){
                         s1=s2+s1;
-                    } else if (str.equals("-")) {
-                        s2=s1;
-                        s1=0.0;
-                        str0 = "0";
-                        flag="-";
+                    }else if(flag.equals("-")){
                         s1=s2-s1;
-                    } else if (str.equals("*")) {
-                        s2=s1;
-                        s1=0.0;
-                        str0 = "0";
-                        flag="*";
+                    }else if(flag.equals("*")){
                         s1=s2*s1;
-                    } else if (str.equals("/")) {
-                        s2=s1;
-                        s1=0.0;
-                        str0 = "0";
-                        flag="/";
+                    }else if(flag.equals("/")){
                         s1=s2/s1;
-                    } else if (str.equals("=")) {
-                        if(flag.equals("+")){
-                            s1=s2+s1;
-                        }else if(flag.equals("-")){
-                            s1=s2-s1;
-                        }else if(flag.equals("*")){
-                            s1=s2*s1;
-                        }else if(flag.equals("/")){
-                            s1=s2/s1;
-                        }else{
-                        }
-                        flag=null;
-                        str0 ="0";
-                    } else {
-                        str0 = str0 + str;
-                        s1=Double.parseDouble(str0);
+                    }else{
                     }
-                    jtf.setText(s1+"");
+                    flag=null;
+                    str0 ="0";
+                } else {
+                    str0 = str0 + str;
+                    s1=Double.parseDouble(str0);
                 }
-            });
+                jtf.setText(s1+"");
+            }
+        };
+
+        for (int i = 0; i < jbs.length; i++) {
+            // 16个按钮添加事件监听器
+            jbs[i].addActionListener(actionListener1);
         }
 
     }
