@@ -1,10 +1,6 @@
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -16,7 +12,7 @@ import javax.swing.JTextField;
 
 public class MyCalculate {
     private JFrame jf;
-    private JPanel jp1 ,jp2, jp3;
+    private JPanel  jp1, jp2;
 
     private JMenuBar menuBar;
     private JMenu viewMenu;
@@ -34,15 +30,14 @@ public class MyCalculate {
     public MyCalculate() {
         // 初始化 JFrame、JPanel 和 JTextField
         jf = new JFrame("JAVA计算器");
+
         jp1 = new JPanel();
         jp2 = new JPanel();
-        jp3 = new JPanel();
 
          menuBar = new JMenuBar();
-         viewMenu = new JMenu("查看");
-         editMenu = new JMenu("编辑");
-         helpMenu = new JMenu("帮助");
-
+         viewMenu = new JMenu("查看(V)");
+         editMenu = new JMenu("编辑(E)");
+         helpMenu = new JMenu("帮助(H)");
 
         JMenuItem copyItem = new JMenuItem("复制");
         JMenuItem pasteItem = new JMenuItem("粘贴");
@@ -99,21 +94,26 @@ public class MyCalculate {
     private void init() {
         jtf.setEditable(true);
         jtf.setText("0");
-        jp2.setLayout(new FlowLayout());
-        jp2.add(jtf);
+        jp1.setLayout(new FlowLayout());
+        jp1.add(jtf);
 
-        jp3.setLayout(new GridLayout(6, 5));
+        jp2.setLayout(new GridLayout(6, 5));
         for (int i = 0; i < jbs.length; i++) {
             // 添加按钮
-            jp3.add(jbs[i]);
+            jp2.add(jbs[i]);
         }
-        jf.add(jp2, BorderLayout.NORTH);
-        jf.add(jp3, BorderLayout.CENTER);
+        Color c1 = new Color(63, 178, 198);
+        Color c2 = new Color(63, 178, 198);
+        jp1.setBackground(Color.LIGHT_GRAY);
+        jp2.setBackground(Color.pink); // 设置背景颜色以区分
+
+        jf.add(jp1, BorderLayout.NORTH);
+        jf.add(jp2, BorderLayout.CENTER);
     }
 
     public void showMe() {
         jf.setVisible(true);
-        jf.setSize(350, 350);
+        jf.setSize(500, 500);
         jf.setLocation(200, 200);
         jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFontAndColor();
@@ -122,15 +122,13 @@ public class MyCalculate {
     private void setFontAndColor() {
         Font f = new Font("Dialog", Font.BOLD, 16);
         jtf.setFont(f);
-        Color c = new Color(63, 178, 198);
-        jp2.setBackground(Color.DARK_GRAY);
         for (int i = 0; i < jbs.length; i++) {
-            jbs[i].setBackground(Color.gray);
+            jbs[i].setBackground(Color.WHITE);
         }
     }
 
     public void doit() {
-        ActionListener actionListener1 = new ActionListener() {
+        ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = e.getActionCommand();
@@ -181,7 +179,7 @@ public class MyCalculate {
 
         for (int i = 0; i < jbs.length; i++) {
             // 16个按钮添加事件监听器
-            jbs[i].addActionListener(actionListener1);
+            jbs[i].addActionListener(actionListener);
         }
 
     }
