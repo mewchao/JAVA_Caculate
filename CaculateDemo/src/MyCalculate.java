@@ -1,19 +1,15 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLOutput;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 public class MyCalculate {
     private JFrame jf;
     private JPanel  jp1, jp2;
 
+    private JLabel j_memory;
     private JMenuBar menuBar;
     private JMenu viewMenu;
     private JMenu editMenu;
@@ -26,6 +22,8 @@ public class MyCalculate {
     private double s1 = 0.0;
     private double s2 = 0.0;
 
+    private double memory = 0.0;
+
     // 创建 MyCalculate 构造函数
     public MyCalculate() {
         // 初始化 JFrame、JPanel 和 JTextField
@@ -33,6 +31,9 @@ public class MyCalculate {
 
         jp1 = new JPanel();
         jp2 = new JPanel();
+        j_memory = new JLabel();
+
+        j_memory.setPreferredSize(new Dimension(50, 20)); // 设置固定大小
 
          menuBar = new JMenuBar();
          viewMenu = new JMenu("查看(V)");
@@ -61,10 +62,10 @@ public class MyCalculate {
         jbs[2] = new JButton("MS");
         jbs[3] = new JButton("M+");
         jbs[4] = new JButton("M-");
-        jbs[5] = new JButton("<-");
+        jbs[5] = new JButton("⬅");
         jbs[6] = new JButton("CE");
         jbs[7] = new JButton("C");
-        jbs[8] = new JButton("+-");
+        jbs[8] = new JButton("±");
         jbs[9] = new JButton("√");
         jbs[10] = new JButton("7");
         jbs[11] = new JButton("8");
@@ -95,6 +96,7 @@ public class MyCalculate {
         jtf.setEditable(true);
         jtf.setText("0");
         jp1.setLayout(new FlowLayout());
+        jp1.add(j_memory);
         jp1.add(jtf);
 
         jp2.setLayout(new GridLayout(6, 5));
@@ -132,12 +134,15 @@ public class MyCalculate {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = e.getActionCommand();
+//                System.out.println(str);
                 if (str.equals("+")) {
                     s2=s1;
                     s1=0.0;
                     str0 = "0";
                     flag="+";
                     s1=s2+s1;
+//                    System.out.print("s1:");
+//                    System.out.println(s1);
                 } else if (str.equals("-")) {
                     s2=s1;
                     s1=0.0;
@@ -152,11 +157,51 @@ public class MyCalculate {
                     s1=s2*s1;
                 } else if (str.equals("/")) {
                     s2=s1;
-                    s1=0.0;
+//                    s1=0.0;
                     str0 = "0";
                     flag="/";
-                    s1=s2/s1;
-                } else if (str.equals("=")) {
+//                    s1=s2/s1;
+                }else if (str.equals("%")) {
+                    s2=s1;
+                    str0 = "0";
+                    flag="%";
+                }else if (str.equals(".")) {
+                    str0 = str0 + str;
+                }else if (str.equals("MC")) {
+//                    memory clear
+                    memory=0;
+                    j_memory.setText(""); // 修改标签的文本内容
+                }else if (str.equals("MR")) {
+//                    memory read
+                    s1=memory;
+                }else if (str.equals("MS")) {
+//                    memory save
+                    memory=s1;
+                    j_memory.setText("M"); // 修改标签的文本内容
+                }else if (str.equals("M+")) {
+                    memory+=s1;
+                }else if (str.equals("M-")) {
+                    memory-=s1;
+                }else if (str.equals("C")) {
+                    jtf.setText("0");
+                    s1=0.0;
+                    s2=0.0;
+                    str0="0";
+                }else if (str.equals("CE")) {
+
+                }else if (str.equals("√")) {
+
+                }else if (str.equals("⬅")) {
+                    //退格
+                    str0 =  str0.substring(0, str0.length() - 1);
+                    s1=Double.parseDouble(str0);
+                }else if (str.equals("±")) {
+                    s1=-(s1);
+
+                }else if (str.equals("1/x")) {
+                    s1=1.0/s1;
+                }else if (str.equals("=")) {
+
                     if(flag.equals("+")){
                         s1=s2+s1;
                     }else if(flag.equals("-")){
@@ -165,213 +210,28 @@ public class MyCalculate {
                         s1=s2*s1;
                     }else if(flag.equals("/")){
                         s1=s2/s1;
+                    }else if(flag.equals("%")){
+                        s1=s2%s1;
                     }else{
+
                     }
                     flag=null;
                     str0 ="0";
-                } else {
+                }else {
+                    //处理输入数字时
                     str0 = str0 + str;
+//                    System.out.println(str0);
                     s1=Double.parseDouble(str0);
+                    System.out.print("s1:");
+                    System.out.println(s1);
                 }
+                //无论是哪个按钮，最终始终设置为s1
                 jtf.setText(s1+"");
             }
         };
 
         for (int i = 0; i < jbs.length; i++) {
-            // 16个按钮添加事件监听器
             jbs[i].addActionListener(actionListener);
         }
-
     }
 }
-
-
-
-//
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.StringTokenizer;
-//
-//
-//public class MyCalculate {
-//
-//    /**
-//     * @param args
-//     */
-//    public static void main(String[] args) {
-//        System.out.println(exec("-8*(((-2+4)+3)/((-1-5)*-2)-5)"));
-//    }
-//
-//    /**
-//     *
-//     * @param exp
-//     *            带括号的四则表达式
-//     * @return 运算结果
-//     */
-//    public static double exec(String exp) {
-//
-//        // 有括号
-//        // -8*(((-2+4)+3)/((-1-5)*-2)-5)
-//
-//
-//        int leftIndex = exp.lastIndexOf('('); // 16
-//
-//        if (leftIndex == -1) {
-//            // 没有括号
-//            // System.out.println("calc" + exp);
-//            return calc(exp);
-//        } else {
-//            // 如果有括弧，调用exec
-//            // System.out.println("exec" + exp);
-//            // 先找最里面的(位置 再找对应的)位置
-//
-//            // (-1-5)*-2)-5) 21
-//            int rightIndex = exp.substring(leftIndex).indexOf(')') + leftIndex;
-//
-//            // 去独立的表达式，运算 calc（-1-5）
-//            double res = calc(exp.substring(leftIndex + 1, rightIndex));
-//            // 重新组织表达式
-//            exp = exp.substring(0, leftIndex) + res
-//                    + exp.substring(rightIndex + 1);
-//            // -8*(((-2+4)+3)/( -6 *-2)-5)
-//            return exec(exp);
-//        }
-//        // 如果没有括弧 直接调用calc
-//
-//    }
-//
-//    /**
-//     *
-//     * @param exp
-//     *            不带括号的四则表达式
-//     * @return 运算结果
-//     */
-//    public static double calc(String exp) {
-//        // 1 . 获取所有四则运算的数字
-//        List<Double> numbers = sliptNumbers(exp);
-//        // 2. 获取所有四则运算的操作符号
-//        List<Character> ops = sliptOps(exp);
-//        // 3. 先乘车运算
-//        // 遍历运算符中的*和/
-//        for (int i = 0; i < ops.size(); i++) {
-//            // * /
-//            // 获取运算符（不移除）
-//            char op = ops.get(i);
-//
-//            // 如果是 * 或者 /， 从运算符的容器中移除，同是从数字容器中到对应该运算符位置的两个数字（移除数据，后面所有数据往前顺序移动）
-//            if (op == '*' || op == '/') {
-//                // 从运算符的容器中移除
-//                ops.remove(i);// 移除当前位置
-//
-//                // 从数字容器中获取对应该运算符位置的两个数字（移除）
-//                double d1 = numbers.remove(i);
-//                double d2 = numbers.remove(i);
-//
-//                // 运算
-//                d1 = op == '*' ? d1 * d2 : d1 / d2;
-//
-//                // 把运算结果插入到数字容器中的i位置
-//                numbers.add(i, d1);// 插入到i的位置 原来从i位置一直到最后的数据，都要往后瞬移一位
-//                // numbers.set(i, d1);//设置i位置上的数据为d1,其余不变
-//                i--;// 移除后，后面所有运算符往前移动，为了保证下一个运算符不被遗漏，所以i--
-//            }// end if (op == '*' || op == '/') {
-//
-//        }// end for (int i = 0 ; i < ops.size(); i++) {
-//
-//        // 4. 再加减运算
-//        while (!ops.isEmpty()) {
-//            // 每次去运算容器中第一个运算符
-//            char op = ops.remove(0);
-//            // 每次从数字容器中两次取第一个数字
-//            double d1 = numbers.remove(0);
-//            double d2 = numbers.remove(0);
-//
-//            // 计算
-//            d1 = op == '+' ? d1 + d2 : d1 - d2;
-//
-//            // 把结果插入到数字容器中的第一个位置
-//            numbers.add(0, d1);
-//        }
-//
-//        // 5. 返回结果
-//
-//        return numbers.get(0);
-//    }
-//
-//    /**
-//     * 从表达式中分离所有的运算符
-//     *
-//     * @param exp
-//     */
-//    private static List<Character> sliptOps(String exp) {
-//        List<Character> ops = new ArrayList<Character>();
-//        // -8*-2+3/-1-5*-2-5
-//        // 把真实表达式变成下面的表达式
-//        String formaterExp = formaterExp(exp);
-//        // @8*@2+3/@1-5*@2-5
-//
-//        StringTokenizer st = new StringTokenizer(formaterExp, "@0123456789.");
-//        while (st.hasMoreTokens()) {
-//            String opStr = st.nextElement() + "";// 取出分割符号之间的数据
-//            // System.out.println(numStr);
-//            // 如果前面是@ 变为负数
-//            ops.add(opStr.charAt(0));
-//        }
-//        return ops;
-//    }
-//
-//    /**
-//     * 从表达式中分离所有的数字
-//     *
-//     * @param exp
-//     *            -8*-2+3/-1-5*-2-5 表达式
-//     */
-//    private static List<Double> sliptNumbers(String exp) {
-//        List<Double> numbers = new ArrayList<Double>();
-//        // -8*-2+3/-1-5*-2-5
-//        // 把真实表达式变成下面的表达式
-//        String formaterExp = formaterExp(exp);
-//        // @8*@2+3/@1-5*@2-5
-//
-//        StringTokenizer st = new StringTokenizer(formaterExp, "+-*/");
-//        while (st.hasMoreTokens()) {
-//            String numStr = st.nextElement() + "";// 取出分割符号之间的数据
-//            // System.out.println(numStr);
-//            // 如果前面是@ 变为负数
-//            if (numStr.charAt(0) == '@') {
-//                numStr = "-" + numStr.substring(1);
-//            }
-//
-//            // 把数字型的字符串变成数字
-//            numbers.add(Double.parseDouble(numStr));
-//        }
-//        return numbers;
-//    }
-//
-//    private static String formaterExp(String exp) {
-//        int index = 0;
-//        while (index < exp.length()) {
-//            char c = exp.charAt(index);
-//            // 判断是否是-符号
-//            // -代表的是负数 第一个，前一字符*/
-//            if (c == '-') {
-//                // 第一个，
-//                if (index == 0) {
-//                    exp = "@" + exp.substring(1);
-//                } else {
-//                    // 前一字符* /
-//                    if (exp.charAt(index - 1) == '*'
-//                            || exp.charAt(index - 1) == '/') {
-//                        exp = exp.substring(0, index) + "@"
-//                                + exp.substring(index + 1);
-//                    }
-//                }
-//            }
-//
-//            index++;
-//            //
-//        }
-//        return exp;
-//    }
-//
-//}
