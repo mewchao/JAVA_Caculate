@@ -50,7 +50,7 @@ public class MyCalculate {
         j_textfield = new JTextField(25);
 
         // 为按钮数组赋值
-        j_buttons = new JButton[30];
+        j_buttons = new JButton[29];
 
         // 逐个创建 JButton 对象，文本内容为对应位置的字符
         j_buttons[0] = new JButton("MC");
@@ -82,7 +82,6 @@ public class MyCalculate {
         j_buttons[26] = new JButton("0");
         j_buttons[27] = new JButton(".");
         j_buttons[28] = new JButton("+");
-        j_buttons[29] = new JButton("=");
 
         init();
         doit();
@@ -95,10 +94,23 @@ public class MyCalculate {
         j_panel1.add(j_memory);
         j_panel1.add(j_textfield);
 
+
         j_panel2.setLayout(new GridLayout(6, 5));
+        //2.创建GridBagLayout对象
+        GridBagLayout gbl = new GridBagLayout();
+        //3.把j_panel2对象的布局管理器设置为GridBagLayout
+        j_panel2.setLayout(gbl);
+        //4.创建GridBagConstraints对象
+        GridBagConstraints gbc = new GridBagConstraints();
+        //7.设置所有的GridBagConstraints对象的fill属性为GridBagConstraints.BOTH,当有空白区域时，组件自动扩大占满空白区域
+        gbc.fill=GridBagConstraints.BOTH;
+        //8.设置GridBagConstraints对象的weightx设置为1,表示横向扩展比例为1
+        gbc.weightx=1;
+
+
         for (int i = 0; i < j_buttons.length; i++) {
             // 添加按钮
-            j_panel2.add(j_buttons[i]);
+                j_panel2.add(j_buttons[i]);
         }
         Color c1 = new Color(63, 178, 198);
         Color c2 = new Color(63, 178, 198);
@@ -224,5 +236,10 @@ public class MyCalculate {
         for (int i = 0; i < j_buttons.length; i++) {
             j_buttons[i].addActionListener(actionListener);
         }
+    }
+
+    public static void addComponent(Container container,Component c,GridBagLayout gridBagLayout,GridBagConstraints gridBagConstraints){
+        gridBagLayout.setConstraints(c,gridBagConstraints);
+        container.add(c);
     }
 }
