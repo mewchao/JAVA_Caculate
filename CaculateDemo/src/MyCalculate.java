@@ -13,10 +13,11 @@ public class MyCalculate {
     private JMenuBar j_menuBar;
     private JMenuItem pasteItem;
     private  JMenuItem copyItem;
+    private  JMenuItem viewItem;
+    private  JMenuItem aboutItem;
     private JMenu j_viewMenu;
     private JMenu j_editMenu;
     private JMenu j_helpMenu;
-
     private JTextField j_textfield;
     private JButton[] j_buttons;
     private String str_basic = "0";
@@ -48,6 +49,10 @@ public class MyCalculate {
         copyItem = new JMenuItem("复制");
         pasteItem = new JMenuItem("粘贴");
 
+        viewItem= new JMenuItem("查看帮助");
+        aboutItem= new JMenuItem("关于计算器");
+
+
         j_textfield.setEditable(true);
         j_textfield.setText("0");
         j_panel1.setLayout(new FlowLayout());
@@ -56,6 +61,9 @@ public class MyCalculate {
 
         j_editMenu.add(copyItem);
         j_editMenu.add(pasteItem);
+
+        j_helpMenu.add(viewItem);
+        j_helpMenu.add(aboutItem);
 
         j_menuBar.add(j_viewMenu);
         j_menuBar.add(j_editMenu);
@@ -73,7 +81,7 @@ public class MyCalculate {
         j_buttons[2] = new JButton("MS");
         j_buttons[3] = new JButton("M+");
         j_buttons[4] = new JButton("M-");
-        j_buttons[5] = new JButton("⬅");
+        j_buttons[5] = new JButton("<-");
         j_buttons[6] = new JButton("CE");
         j_buttons[7] = new JButton("C");
         j_buttons[8] = new JButton("±");
@@ -97,21 +105,30 @@ public class MyCalculate {
         j_buttons[26] = new JButton("0");
         j_buttons[27] = new JButton(".");
         j_buttons[28] = new JButton("+");
+
+        // 设置按钮的字体大小
+        Font buttonFont = new Font("Arial", Font.BOLD, 14);
+        for (int i = 0; i < j_buttons.length; i++) {
+            j_buttons[i].setFont(buttonFont); // 为每个按钮设置字体
+        }
     }
 
     private void init() {
 
+
         GridBagLayout gbl = new GridBagLayout();
-
         j_panel2.setLayout(gbl);
-
         GridBagConstraints gbc = new GridBagConstraints();
 
-        //设置所有的GridBagConstraints对象的fill属性为GridBagConstraints.BOTH,当有空白区域时，组件自动扩大占满空白区域
-        gbc.fill=GridBagConstraints.BOTH;
+
+        // 设置weightx和weighty属性
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+
+        // 设置fill属性为BOTH
+        gbc.fill = GridBagConstraints.BOTH;
 
         gbc.gridwidth=1;
-
         // 添加按钮
         for (int i = 0; i < 4; i++) {
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
@@ -119,45 +136,37 @@ public class MyCalculate {
 
         //把GridBagConstraints的gridwidth设置为GridBagConstraints.REMAINDER,则表明当前组件是横向最后一个组件
         gbc.gridwidth=GridBagConstraints.REMAINDER;
-
         // 添加按钮
         addComponent(j_panel2, j_buttons[4], gbl ,gbc);
 
         gbc.gridwidth=1;
-
         // 添加按钮
         for (int i = 5; i < 9; i++) {
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
         gbc.gridwidth=GridBagConstraints.REMAINDER;
-
         addComponent(j_panel2, j_buttons[9], gbl ,gbc);
 
         gbc.gridwidth=1;
-
         // 添加按钮
         for (int i = 10; i < 14; i++) {
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
         gbc.gridwidth=GridBagConstraints.REMAINDER;
-
         addComponent(j_panel2, j_buttons[14], gbl ,gbc);
 
         gbc.gridwidth=1;
-
         // 添加按钮
         for (int i = 15; i < 19; i++) {
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
         gbc.gridwidth=GridBagConstraints.REMAINDER;
-
         addComponent(j_panel2, j_buttons[19], gbl ,gbc);
 
         gbc.gridwidth=1;
-
         // 添加按钮
         for (int i = 20; i < 24; i++) {
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
@@ -177,7 +186,6 @@ public class MyCalculate {
         for (int i = 25; i < 28; i++) {
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
-
         addComponent(j_panel2, j_buttons[28], gbl ,gbc);
 
         j_frame.add(j_panel1, BorderLayout.NORTH);
@@ -186,7 +194,7 @@ public class MyCalculate {
 
     public void showMe() {
         j_frame.setVisible(true);
-        j_frame.setSize(275, 350);
+        j_frame.setSize(300, 350);
         j_frame.setLocation(200, 200);
         j_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFontAndColor();
@@ -196,7 +204,7 @@ public class MyCalculate {
         Color c1 = new Color(63, 178, 198);
         Color c2 = new Color(63, 178, 198);
         j_panel1.setBackground(Color.LIGHT_GRAY);
-        j_panel2.setBackground(Color.pink); // 设置背景颜色以区分
+        j_panel2.setBackground(Color.white);
 
         Font f = new Font("Dialog", Font.BOLD, 16);
         j_textfield.setFont(f);
@@ -262,8 +270,8 @@ public class MyCalculate {
                 }else if (str.equals("CE")) {
 
                 }else if (str.equals("√")) {
-
-                }else if (str.equals("⬅")) {
+                    num1=Math.sqrt(num1);
+                }else if (str.equals("<-")) {
                     //退格
                     str_basic =  str_basic.substring(0, str_basic.length() - 1);
                     num1=Double.parseDouble(str_basic);
@@ -321,7 +329,6 @@ public class MyCalculate {
                     String text = (String) transferable.getTransferData(DataFlavor.stringFlavor);
                     num1 = Double.parseDouble(text);
                     j_textfield.setText(num1+"");
-//                    System.out.println("从剪贴板粘贴的文本: " + text);
                 } catch (UnsupportedFlavorException | IOException ee) {
                     ee.printStackTrace();
                 }
@@ -344,11 +351,17 @@ public class MyCalculate {
 
                 // 将StringSelection对象放入剪贴板
                 clipboard.setContents(stringSelection, null);
-//                System.out.println("文本已复制到剪贴板: " + textToCopy);
             }
         };
 
         copyItem.addActionListener(actionListener_copy);
+
+        aboutItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(j_frame, "这是一个警示消息！", "警告", JOptionPane.WARNING_MESSAGE);
+            }
+        });
     }
 
     public static void addComponent(Container container,Component c,GridBagLayout gridBagLayout,GridBagConstraints gridBagConstraints){
