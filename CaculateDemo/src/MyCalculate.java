@@ -27,6 +27,13 @@ public class MyCalculate {
     private double memory = 0.0;
     // 创建 MyCalculate 构造函数
     public MyCalculate() {
+        newBar();
+        newButtons();
+        addButtons();
+        action();
+    }
+
+    private void newFrame() {
         // 初始化 JFrame、JPanel 和 JTextField
         j_frame = new JFrame("JAVA计算器");
         j_panel1 = new JPanel();
@@ -34,10 +41,6 @@ public class MyCalculate {
         j_memory = new JLabel();
         j_memory.setPreferredSize(new Dimension(30, 15)); // 设置固定大小
         j_textfield = new JTextField(13);
-        newBar();
-        newButtons();
-        init();
-        doit();
     }
 
     private void newBar() {
@@ -113,8 +116,7 @@ public class MyCalculate {
         }
     }
 
-    private void init() {
-
+    private void addButtons() {
 
         GridBagLayout gbl = new GridBagLayout();
         j_panel2.setLayout(gbl);
@@ -213,7 +215,7 @@ public class MyCalculate {
         }
     }
 
-    public void doit() {
+    public void action() {
         ActionListener actionListener_buttons = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
