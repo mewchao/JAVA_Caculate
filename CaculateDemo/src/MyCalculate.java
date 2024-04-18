@@ -9,6 +9,8 @@ public class MyCalculate {
     private JPanel  j_panel1, j_panel2;
     private JLabel j_memory;
     private JMenuBar j_menuBar;
+    private JMenuItem pasteItem;
+    private  JMenuItem copyItem;
     private JMenu j_viewMenu;
     private JMenu j_editMenu;
     private JMenu j_helpMenu;
@@ -29,25 +31,18 @@ public class MyCalculate {
         j_panel2 = new JPanel();
         j_memory = new JLabel();
 
-        j_memory.setPreferredSize(new Dimension(50, 20)); // 设置固定大小
+        j_memory.setPreferredSize(new Dimension(30, 15)); // 设置固定大小
 
          j_menuBar = new JMenuBar();
          j_viewMenu = new JMenu("查看(V)");
          j_editMenu = new JMenu("编辑(E)");
          j_helpMenu = new JMenu("帮助(H)");
 
-        JMenuItem copyItem = new JMenuItem("复制");
-        JMenuItem pasteItem = new JMenuItem("粘贴");
+         copyItem = new JMenuItem("复制");
+         pasteItem = new JMenuItem("粘贴");
 
-        j_editMenu.add(copyItem);
-        j_editMenu.add(pasteItem);
 
-        j_menuBar.add(j_viewMenu);
-        j_menuBar.add(j_editMenu);
-        j_menuBar.add(j_helpMenu);
-        j_frame.setJMenuBar(j_menuBar);
-
-        j_textfield = new JTextField(25);
+        j_textfield = new JTextField(13);
 
         // 为按钮数组赋值
         j_buttons = new JButton[29];
@@ -94,24 +89,97 @@ public class MyCalculate {
         j_panel1.add(j_memory);
         j_panel1.add(j_textfield);
 
+        j_editMenu.add(copyItem);
+        j_editMenu.add(pasteItem);
 
-        j_panel2.setLayout(new GridLayout(6, 5));
-        //2.创建GridBagLayout对象
+        j_menuBar.add(j_viewMenu);
+        j_menuBar.add(j_editMenu);
+        j_menuBar.add(j_helpMenu);
+
+        j_frame.setJMenuBar(j_menuBar);
+
+//        j_panel2.setLayout(new GridLayout(6, 5));
+
+        //创建GridBagLayout对象
         GridBagLayout gbl = new GridBagLayout();
-        //3.把j_panel2对象的布局管理器设置为GridBagLayout
+
+        //把j_panel2对象的布局管理器设置为GridBagLayout
         j_panel2.setLayout(gbl);
-        //4.创建GridBagConstraints对象
+
+        //创建GridBagConstraints对象
         GridBagConstraints gbc = new GridBagConstraints();
-        //7.设置所有的GridBagConstraints对象的fill属性为GridBagConstraints.BOTH,当有空白区域时，组件自动扩大占满空白区域
+
+        //设置所有的GridBagConstraints对象的fill属性为GridBagConstraints.BOTH,当有空白区域时，组件自动扩大占满空白区域
         gbc.fill=GridBagConstraints.BOTH;
-        //8.设置GridBagConstraints对象的weightx设置为1,表示横向扩展比例为1
+
+        //设置GridBagConstraints对象的weightx设置为1,表示横向扩展比例为1
         gbc.weightx=1;
 
-
-        for (int i = 0; i < j_buttons.length; i++) {
+        for (int i = 0; i < 4; i++) {
             // 添加按钮
-                j_panel2.add(j_buttons[i]);
+            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
+
+        //把GridBagConstraints的gridwidth设置为GridBagConstraints.REMAINDER,则表明当前组件是横向最后一个组件
+        gbc.gridwidth=GridBagConstraints.REMAINDER;
+
+        addComponent(j_panel2, j_buttons[4], gbl ,gbc);
+
+        gbc.gridwidth=1;
+
+        for (int i = 5; i < 9; i++) {
+            // 添加按钮
+            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+        }
+
+        gbc.gridwidth=GridBagConstraints.REMAINDER;
+
+        addComponent(j_panel2, j_buttons[9], gbl ,gbc);
+
+        gbc.gridwidth=1;
+
+        for (int i = 10; i < 14; i++) {
+            // 添加按钮
+            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+        }
+
+        gbc.gridwidth=GridBagConstraints.REMAINDER;
+
+        addComponent(j_panel2, j_buttons[14], gbl ,gbc);
+
+        gbc.gridwidth=1;
+
+        for (int i = 15; i < 19; i++) {
+            // 添加按钮
+            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+        }
+
+        gbc.gridwidth=GridBagConstraints.REMAINDER;
+
+        addComponent(j_panel2, j_buttons[19], gbl ,gbc);
+
+        gbc.gridwidth=1;
+
+        for (int i = 20; i < 24; i++) {
+            // 添加按钮
+            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+        }
+
+        gbc.gridwidth=GridBagConstraints.REMAINDER;
+        gbc.gridheight=2;
+        gbc.fill=GridBagConstraints.BOTH;
+        addComponent(j_panel2, j_buttons[24], gbl ,gbc);
+
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        gbc.fill=GridBagConstraints.BOTH;
+
+        for (int i = 25; i < 28; i++) {
+            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+        }
+
+        addComponent(j_panel2, j_buttons[28], gbl ,gbc);
+
         Color c1 = new Color(63, 178, 198);
         Color c2 = new Color(63, 178, 198);
         j_panel1.setBackground(Color.LIGHT_GRAY);
@@ -123,7 +191,7 @@ public class MyCalculate {
 
     public void showMe() {
         j_frame.setVisible(true);
-        j_frame.setSize(500, 500);
+        j_frame.setSize(275, 350);
         j_frame.setLocation(200, 200);
         j_frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setFontAndColor();
