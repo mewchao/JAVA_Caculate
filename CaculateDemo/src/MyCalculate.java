@@ -1,6 +1,8 @@
 import java.awt.*;
+import java.awt.datatransfer.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.*;
 
@@ -26,27 +28,45 @@ public class MyCalculate {
     public MyCalculate() {
         // 初始化 JFrame、JPanel 和 JTextField
         j_frame = new JFrame("JAVA计算器");
-
         j_panel1 = new JPanel();
         j_panel2 = new JPanel();
         j_memory = new JLabel();
-
         j_memory.setPreferredSize(new Dimension(30, 15)); // 设置固定大小
-
-         j_menuBar = new JMenuBar();
-         j_viewMenu = new JMenu("查看(V)");
-         j_editMenu = new JMenu("编辑(E)");
-         j_helpMenu = new JMenu("帮助(H)");
-
-         copyItem = new JMenuItem("复制");
-         pasteItem = new JMenuItem("粘贴");
-
-
         j_textfield = new JTextField(13);
+        newBar();
+        newButtons();
+        init();
+        doit();
+    }
 
+    private void newBar() {
+        j_menuBar = new JMenuBar();
+        j_viewMenu = new JMenu("查看(V)");
+        j_editMenu = new JMenu("编辑(E)");
+        j_helpMenu = new JMenu("帮助(H)");
+
+        copyItem = new JMenuItem("复制");
+        pasteItem = new JMenuItem("粘贴");
+
+        j_textfield.setEditable(true);
+        j_textfield.setText("0");
+        j_panel1.setLayout(new FlowLayout());
+        j_panel1.add(j_memory);
+        j_panel1.add(j_textfield);
+
+        j_editMenu.add(copyItem);
+        j_editMenu.add(pasteItem);
+
+        j_menuBar.add(j_viewMenu);
+        j_menuBar.add(j_editMenu);
+        j_menuBar.add(j_helpMenu);
+
+        j_frame.setJMenuBar(j_menuBar);
+    }
+
+    private void newButtons() {
         // 为按钮数组赋值
         j_buttons = new JButton[29];
-
         // 逐个创建 JButton 对象，文本内容为对应位置的字符
         j_buttons[0] = new JButton("MC");
         j_buttons[1] = new JButton("MR");
@@ -77,58 +97,36 @@ public class MyCalculate {
         j_buttons[26] = new JButton("0");
         j_buttons[27] = new JButton(".");
         j_buttons[28] = new JButton("+");
-
-        init();
-        doit();
     }
 
     private void init() {
-        j_textfield.setEditable(true);
-        j_textfield.setText("0");
-        j_panel1.setLayout(new FlowLayout());
-        j_panel1.add(j_memory);
-        j_panel1.add(j_textfield);
 
-        j_editMenu.add(copyItem);
-        j_editMenu.add(pasteItem);
-
-        j_menuBar.add(j_viewMenu);
-        j_menuBar.add(j_editMenu);
-        j_menuBar.add(j_helpMenu);
-
-        j_frame.setJMenuBar(j_menuBar);
-
-//        j_panel2.setLayout(new GridLayout(6, 5));
-
-        //创建GridBagLayout对象
         GridBagLayout gbl = new GridBagLayout();
 
-        //把j_panel2对象的布局管理器设置为GridBagLayout
         j_panel2.setLayout(gbl);
 
-        //创建GridBagConstraints对象
         GridBagConstraints gbc = new GridBagConstraints();
 
         //设置所有的GridBagConstraints对象的fill属性为GridBagConstraints.BOTH,当有空白区域时，组件自动扩大占满空白区域
         gbc.fill=GridBagConstraints.BOTH;
 
-        //设置GridBagConstraints对象的weightx设置为1,表示横向扩展比例为1
-        gbc.weightx=1;
+        gbc.gridwidth=1;
 
+        // 添加按钮
         for (int i = 0; i < 4; i++) {
-            // 添加按钮
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
         //把GridBagConstraints的gridwidth设置为GridBagConstraints.REMAINDER,则表明当前组件是横向最后一个组件
         gbc.gridwidth=GridBagConstraints.REMAINDER;
 
+        // 添加按钮
         addComponent(j_panel2, j_buttons[4], gbl ,gbc);
 
         gbc.gridwidth=1;
 
+        // 添加按钮
         for (int i = 5; i < 9; i++) {
-            // 添加按钮
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
@@ -138,8 +136,8 @@ public class MyCalculate {
 
         gbc.gridwidth=1;
 
+        // 添加按钮
         for (int i = 10; i < 14; i++) {
-            // 添加按钮
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
@@ -149,8 +147,8 @@ public class MyCalculate {
 
         gbc.gridwidth=1;
 
+        // 添加按钮
         for (int i = 15; i < 19; i++) {
-            // 添加按钮
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
@@ -160,30 +158,27 @@ public class MyCalculate {
 
         gbc.gridwidth=1;
 
+        // 添加按钮
         for (int i = 20; i < 24; i++) {
-            // 添加按钮
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
         gbc.gridwidth=GridBagConstraints.REMAINDER;
         gbc.gridheight=2;
         gbc.fill=GridBagConstraints.BOTH;
+        // 添加按钮
         addComponent(j_panel2, j_buttons[24], gbl ,gbc);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
         gbc.fill=GridBagConstraints.BOTH;
 
+        // 添加按钮
         for (int i = 25; i < 28; i++) {
             addComponent(j_panel2, j_buttons[i], gbl ,gbc);
         }
 
         addComponent(j_panel2, j_buttons[28], gbl ,gbc);
-
-        Color c1 = new Color(63, 178, 198);
-        Color c2 = new Color(63, 178, 198);
-        j_panel1.setBackground(Color.LIGHT_GRAY);
-        j_panel2.setBackground(Color.pink); // 设置背景颜色以区分
 
         j_frame.add(j_panel1, BorderLayout.NORTH);
         j_frame.add(j_panel2, BorderLayout.CENTER);
@@ -198,6 +193,11 @@ public class MyCalculate {
     }
 
     private void setFontAndColor() {
+        Color c1 = new Color(63, 178, 198);
+        Color c2 = new Color(63, 178, 198);
+        j_panel1.setBackground(Color.LIGHT_GRAY);
+        j_panel2.setBackground(Color.pink); // 设置背景颜色以区分
+
         Font f = new Font("Dialog", Font.BOLD, 16);
         j_textfield.setFont(f);
         for (int i = 0; i < j_buttons.length; i++) {
@@ -206,7 +206,7 @@ public class MyCalculate {
     }
 
     public void doit() {
-        ActionListener actionListener = new ActionListener() {
+        ActionListener actionListener_buttons = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = e.getActionCommand();
@@ -302,8 +302,53 @@ public class MyCalculate {
         };
 
         for (int i = 0; i < j_buttons.length; i++) {
-            j_buttons[i].addActionListener(actionListener);
+            j_buttons[i].addActionListener(actionListener_buttons);
         }
+
+        ActionListener actionListener_paste = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // 获取系统剪贴板
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+
+            // 从剪贴板中获取Transferable对象
+            Transferable transferable = clipboard.getContents(null);
+
+            // 检查Transferable对象中是否包含文本
+            if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                try {
+                    // 从Transferable对象中获取文本并将其粘贴到应用程序中
+                    String text = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+                    num1 = Double.parseDouble(text);
+                    j_textfield.setText(num1+"");
+//                    System.out.println("从剪贴板粘贴的文本: " + text);
+                } catch (UnsupportedFlavorException | IOException ee) {
+                    ee.printStackTrace();
+                }
+            }
+        }
+        };
+
+        pasteItem.addActionListener(actionListener_paste);
+
+        ActionListener actionListener_copy = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String  textToCopy=Double.toString(num1);
+
+                // 创建StringSelection对象，用于保存要复制的文本
+                StringSelection stringSelection = new StringSelection(textToCopy);
+
+                // 获取系统剪贴板
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+
+                // 将StringSelection对象放入剪贴板
+                clipboard.setContents(stringSelection, null);
+//                System.out.println("文本已复制到剪贴板: " + textToCopy);
+            }
+        };
+
+        copyItem.addActionListener(actionListener_copy);
     }
 
     public static void addComponent(Container container,Component c,GridBagLayout gridBagLayout,GridBagConstraints gridBagConstraints){
