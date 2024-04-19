@@ -8,13 +8,13 @@ import javax.swing.*;
 
 public class MyCalculate {
     private JFrame j_frame;
-    private JPanel  j_panel1, j_panel2;
+    private JPanel j_panel1, j_panel2;
     private JLabel j_memory;
     private JMenuBar j_menuBar;
     private JMenuItem pasteItem;
-    private  JMenuItem copyItem;
-    private  JMenuItem viewItem;
-    private  JMenuItem aboutItem;
+    private JMenuItem copyItem;
+    private JMenuItem viewItem;
+    private JMenuItem aboutItem;
     private JMenu j_viewMenu;
     private JMenu j_editMenu;
     private JMenu j_helpMenu;
@@ -23,10 +23,12 @@ public class MyCalculate {
     private String str_basic = "0";
     private String flag = null;
     private double num1 = 0.0;
-    private double num2  = 0.0;
+    private double num2 = 0.0;
     private double memory = 0.0;
+
     // 创建 MyCalculate 构造函数
     public MyCalculate() {
+        newFrame();
         newBar();
         newButtons();
         addButtons();
@@ -52,8 +54,8 @@ public class MyCalculate {
         copyItem = new JMenuItem("复制");
         pasteItem = new JMenuItem("粘贴");
 
-        viewItem= new JMenuItem("查看帮助");
-        aboutItem= new JMenuItem("关于计算器");
+        viewItem = new JMenuItem("查看帮助");
+        aboutItem = new JMenuItem("关于计算器");
 
 
         j_textfield.setEditable(true);
@@ -130,65 +132,65 @@ public class MyCalculate {
         // 设置fill属性为BOTH
         gbc.fill = GridBagConstraints.BOTH;
 
-        gbc.gridwidth=1;
+        gbc.gridwidth = 1;
         // 添加按钮
         for (int i = 0; i < 4; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+            addComponent(j_panel2, j_buttons[i], gbl, gbc);
         }
 
         //把GridBagConstraints的gridwidth设置为GridBagConstraints.REMAINDER,则表明当前组件是横向最后一个组件
-        gbc.gridwidth=GridBagConstraints.REMAINDER;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         // 添加按钮
-        addComponent(j_panel2, j_buttons[4], gbl ,gbc);
+        addComponent(j_panel2, j_buttons[4], gbl, gbc);
 
-        gbc.gridwidth=1;
+        gbc.gridwidth = 1;
         // 添加按钮
         for (int i = 5; i < 9; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+            addComponent(j_panel2, j_buttons[i], gbl, gbc);
         }
 
-        gbc.gridwidth=GridBagConstraints.REMAINDER;
-        addComponent(j_panel2, j_buttons[9], gbl ,gbc);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        addComponent(j_panel2, j_buttons[9], gbl, gbc);
 
-        gbc.gridwidth=1;
+        gbc.gridwidth = 1;
         // 添加按钮
         for (int i = 10; i < 14; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+            addComponent(j_panel2, j_buttons[i], gbl, gbc);
         }
 
-        gbc.gridwidth=GridBagConstraints.REMAINDER;
-        addComponent(j_panel2, j_buttons[14], gbl ,gbc);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        addComponent(j_panel2, j_buttons[14], gbl, gbc);
 
-        gbc.gridwidth=1;
+        gbc.gridwidth = 1;
         // 添加按钮
         for (int i = 15; i < 19; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+            addComponent(j_panel2, j_buttons[i], gbl, gbc);
         }
 
-        gbc.gridwidth=GridBagConstraints.REMAINDER;
-        addComponent(j_panel2, j_buttons[19], gbl ,gbc);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        addComponent(j_panel2, j_buttons[19], gbl, gbc);
 
-        gbc.gridwidth=1;
+        gbc.gridwidth = 1;
         // 添加按钮
         for (int i = 20; i < 24; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+            addComponent(j_panel2, j_buttons[i], gbl, gbc);
         }
 
-        gbc.gridwidth=GridBagConstraints.REMAINDER;
-        gbc.gridheight=2;
-        gbc.fill=GridBagConstraints.BOTH;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        gbc.gridheight = 2;
+        gbc.fill = GridBagConstraints.BOTH;
         // 添加按钮
-        addComponent(j_panel2, j_buttons[24], gbl ,gbc);
+        addComponent(j_panel2, j_buttons[24], gbl, gbc);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
-        gbc.fill=GridBagConstraints.BOTH;
+        gbc.fill = GridBagConstraints.BOTH;
 
         // 添加按钮
         for (int i = 25; i < 28; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl ,gbc);
+            addComponent(j_panel2, j_buttons[i], gbl, gbc);
         }
-        addComponent(j_panel2, j_buttons[28], gbl ,gbc);
+        addComponent(j_panel2, j_buttons[28], gbl, gbc);
 
         j_frame.add(j_panel1, BorderLayout.NORTH);
         j_frame.add(j_panel2, BorderLayout.CENTER);
@@ -221,93 +223,92 @@ public class MyCalculate {
             public void actionPerformed(ActionEvent e) {
                 String str = e.getActionCommand();
                 if (str.equals("+")) {
-                    num2=num1;
-                    num1=0.0;
+                    num2 = num1;
+                    num1 = 0.0;
                     str_basic = "0";
-                    flag="+";
-                    num1=num2+num1;
+                    flag = "+";
+                    num1 = num2 + num1;
                 } else if (str.equals("-")) {
-                    num2=num1;
-                    num1=0.0;
+                    num2 = num1;
+                    num1 = 0.0;
                     str_basic = "0";
-                    flag="-";
-                    num1=num2-num1;
+                    flag = "-";
+                    num1 = num2 - num1;
                 } else if (str.equals("*")) {
-                    num2=num1;
-                    num1=0.0;
+                    num2 = num1;
+                    num1 = 0.0;
                     str_basic = "0";
-                    flag="*";
-                    num1=num2*num1;
+                    flag = "*";
+                    num1 = num2 * num1;
                 } else if (str.equals("/")) {
-                    num2=num1;
+                    num2 = num1;
                     str_basic = "0";
-                    flag="/";
-                }else if (str.equals("%")) {
-                    num2=num1;
+                    flag = "/";
+                } else if (str.equals("%")) {
+                    num2 = num1;
                     str_basic = "0";
-                    flag="%";
-                }else if (str.equals(".")) {
+                    flag = "%";
+                } else if (str.equals(".")) {
                     str_basic = str_basic + str;
-                }else if (str.equals("MC")) {
+                } else if (str.equals("MC")) {
                     //  memory clear
-                    memory=0;
+                    memory = 0;
                     j_memory.setText(""); // 修改标签的文本内容
-                }else if (str.equals("MR")) {
+                } else if (str.equals("MR")) {
                     // memory read
-                    num1=memory;
-                }else if (str.equals("MS")) {
+                    num1 = memory;
+                } else if (str.equals("MS")) {
                     // memory save
-                    memory=num1;
+                    memory = num1;
                     // 修改标签的文本内容
                     j_memory.setText("M");
-                }else if (str.equals("M+")) {
-                    memory+=num1;
-                }else if (str.equals("M-")) {
-                    memory-=num1;
-                }else if (str.equals("C")) {
+                } else if (str.equals("M+")) {
+                    memory += num1;
+                } else if (str.equals("M-")) {
+                    memory -= num1;
+                } else if (str.equals("C")) {
                     j_textfield.setText("0");
-                    num1=0.0;
-                    num2=0.0;
-                    str_basic="0";
-                }else if (str.equals("CE")) {
-
-                }else if (str.equals("√")) {
-                    num1=Math.sqrt(num1);
-                }else if (str.equals("<-")) {
+                    num1 = 0.0;
+                    num2 = 0.0;
+                    str_basic = "0";
+                } else if (str.equals("CE")) {
+                    num1 = 0.0;
+                    str_basic = "0";
+                } else if (str.equals("√")) {
+                    num1 = Math.sqrt(num1);
+                } else if (str.equals("<-")) {
                     //退格
-                    str_basic =  str_basic.substring(0, str_basic.length() - 1);
-                    num1=Double.parseDouble(str_basic);
-                }else if (str.equals("±")) {
-                    num1=-(num1);
+                    str_basic = str_basic.substring(0, str_basic.length() - 1);
+                    num1 = Double.parseDouble(str_basic);
+                } else if (str.equals("±")) {
+                    num1 = -(num1);
 
-                }else if (str.equals("1/x")) {
-                    num1=1.0/num1;
-                }else if (str.equals("=")) {
+                } else if (str.equals("1/x")) {
+                    num1 = 1.0 / num1;
+                } else if (str.equals("=")) {
 
-                    if(flag.equals("+")){
-                        num1=num2+num1;
-                    }else if(flag.equals("-")){
-                        num1=num2-num1;
-                    }else if(flag.equals("*")){
-                        num1=num2*num1;
-                    }else if(flag.equals("/")){
-                        num1=num2/num1;
-                    }else if(flag.equals("%")){
-                        num1=num2%num1;
-                    }else{
+                    if (flag == null) {
 
+                    } else if (flag.equals("+")) {
+                        num1 = num2 + num1;
+                    } else if (flag.equals("-")) {
+                        num1 = num2 - num1;
+                    } else if (flag.equals("*")) {
+                        num1 = num2 * num1;
+                    } else if (flag.equals("/")) {
+                        num1 = num2 / num1;
+                    } else if (flag.equals("%")) {
+                        num1 = num2 % num1;
                     }
-                    flag=null;
-                    str_basic ="0";
-                }else {
+                    flag = null;
+                    str_basic = "0";
+                } else {
                     //处理输入数字时
                     str_basic = str_basic + str;
-                    num1=Double.parseDouble(str_basic);
-                    System.out.print("s1:");
-                    System.out.println(num1);
+                    num1 = Double.parseDouble(str_basic);
                 }
                 //无论是哪个按钮，最终始终设置为s1
-                j_textfield.setText(num1+"");
+                j_textfield.setText(num1 + "");
             }
         };
 
@@ -316,26 +317,26 @@ public class MyCalculate {
         }
 
         ActionListener actionListener_paste = new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            // 获取系统剪贴板
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // 获取系统剪贴板
+                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
-            // 从剪贴板中获取Transferable对象
-            Transferable transferable = clipboard.getContents(null);
+                // 从剪贴板中获取Transferable对象
+                Transferable transferable = clipboard.getContents(null);
 
-            // 检查Transferable对象中是否包含文本
-            if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-                try {
-                    // 从Transferable对象中获取文本并将其粘贴到应用程序中
-                    String text = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-                    num1 = Double.parseDouble(text);
-                    j_textfield.setText(num1+"");
-                } catch (UnsupportedFlavorException | IOException ee) {
-                    ee.printStackTrace();
+                // 检查Transferable对象中是否包含文本
+                if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+                    try {
+                        // 从Transferable对象中获取文本并将其粘贴到应用程序中
+                        String text = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+                        num1 = Double.parseDouble(text);
+                        j_textfield.setText(num1 + "");
+                    } catch (UnsupportedFlavorException | IOException ee) {
+                        ee.printStackTrace();
+                    }
                 }
             }
-        }
         };
 
         pasteItem.addActionListener(actionListener_paste);
@@ -343,7 +344,7 @@ public class MyCalculate {
         ActionListener actionListener_copy = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String  textToCopy=Double.toString(num1);
+                String textToCopy = Double.toString(num1);
 
                 // 创建StringSelection对象，用于保存要复制的文本
                 StringSelection stringSelection = new StringSelection(textToCopy);
@@ -366,8 +367,8 @@ public class MyCalculate {
         });
     }
 
-    public static void addComponent(Container container,Component c,GridBagLayout gridBagLayout,GridBagConstraints gridBagConstraints){
-        gridBagLayout.setConstraints(c,gridBagConstraints);
+    public static void addComponent(Container container, Component c, GridBagLayout gridBagLayout, GridBagConstraints gridBagConstraints) {
+        gridBagLayout.setConstraints(c, gridBagConstraints);
         container.add(c);
     }
 }
