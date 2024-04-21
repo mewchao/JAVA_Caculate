@@ -28,7 +28,7 @@ public class MyCalculate {
     private String flag = null;
     private double num1 = 0.0;
     private double num2 = 0.0;
-    private double memory = 0.0;
+    private Double memory = 0.0;
 
     // 创建 MyCalculate 构造函数
     public MyCalculate() {
@@ -130,7 +130,7 @@ public class MyCalculate {
         j_panel2.setLayout(gbl);
 
         for (int i = 0; i < 30; i++) {
-                j_panel2.add(j_buttons[i]);
+            j_panel2.add(j_buttons[i]);
         }
 
         gbs.weightx = 1.0;
@@ -292,8 +292,6 @@ public class MyCalculate {
     }
 
     private void setFontAndColor() {
-        Color c1 = new Color(63, 178, 198);
-        Color c2 = new Color(63, 178, 198);
         j_panel1.setBackground(Color.LIGHT_GRAY);
         j_panel2.setBackground(Color.white);
 
@@ -304,19 +302,20 @@ public class MyCalculate {
         }
     }
 
-    private static final String OPERATORS = "+-*/";
+    private static final String OPERATORS = "+-*/%";
 
     public static double evaluateExpression(String expression) {
         Stack<String> operatorStack = new Stack<>();
         Stack<Double> operandStack = new Stack<>();
 
         expression = expression.replaceAll("\\s", "");
-        String[] tokens = expression.split("(?=[-+*/()])|(?<=[-+*/()])");
+        String[] tokens = expression.split("(?=[-+*/()%])|(?<=[-+*/()%])");
 
         for (int i = 0; i < tokens.length; i++) {
             String token = tokens[i];
             if (OPERATORS.contains(token)) {
-                if (token.equals("-") && (i == 0 || tokens[i - 1].equals("("))) { // 当"-"作为负号使用时
+                if (token.equals("-") && (i == 0 || tokens[i - 1].equals("("))) {
+                    // 当"-"作为负号使用时
                     operandStack.push(0.0);
                 }
                 while (!operatorStack.isEmpty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
@@ -354,7 +353,7 @@ public class MyCalculate {
     private static int getPrecedence(String operator) {
         if (operator.equals("+") || operator.equals("-")) {
             return 1;
-        } else if (operator.equals("*") || operator.equals("/")) {
+        } else if (operator.equals("*") || operator.equals("/") || operator.equals("%")) {  // 添加了 "%"
             return 2;
         } else {
             return 0;
@@ -375,6 +374,12 @@ public class MyCalculate {
                 } else {
                     throw new IllegalArgumentException("Cannot divide by zero");
                 }
+            case "%":  // 添加了 "%"
+                if (operand2 != 0) {
+                    return operand1 % operand2;
+                } else {
+                    throw new IllegalArgumentException("Cannot divide by zero");
+                }
             default:
                 return 0;
         }
@@ -383,105 +388,114 @@ public class MyCalculate {
     public void action() {
         ActionListener actionListener_buttons = new ActionListener() {
             String expression = "";
+
             @Override
             public void actionPerformed(ActionEvent e) {
+                boolean isError = false;
                 String str = e.getActionCommand();
+                if (expression == "Error") {
+                    expression = "";
+                }
                 if (str.equals("+")) {
-                    expression+="+";
-//                    num2 = num1;
-//                    num1 = 0.0;
-//                    str_basic = "0";
-//                    flag = "+";
-//                    num1 = num2 + num1;
+                    expression += str;
                 } else if (str.equals("-")) {
-                    expression+="-";
-//                    num2 = num1;
-//                    num1 = 0.0;
-//                    str_basic = "0";
-//                    flag = "-";
-//                    num1 = num2 - num1;
+                    expression += str;
                 } else if (str.equals("*")) {
-                    expression+="*";
-//                    num2 = num1;
-//                    num1 = 0.0;
-//                    str_basic = "0";
-//                    flag = "*";
-//                    num1 = num2 * num1;
+                    expression += str;
                 } else if (str.equals("/")) {
-                    expression+="/";
-//                    num2 = num1;
-//                    str_basic = "0";
-//                    flag = "/";
+                    expression += str;
                 } else if (str.equals("(")) {
-                    expression+="(";
+                    expression += str;
                 } else if (str.equals(")")) {
-                    expression+=")";
-                }else if (str.equals("%")) {
-                    num2 = num1;
-                    str_basic = "0";
-                    flag = "%";
+                    expression += str;
+                } else if (str.equals("%")) {
+                    expression += str;
                 } else if (str.equals(".")) {
-                    str_basic = str_basic + str;
+                    expression += str;
                 } else if (str.equals("MC")) {
-                    //  memory clear
-                    memory = 0;
+                    memory = 0.0;
                     j_memory.setText(""); // 修改标签的文本内容
                 } else if (str.equals("MR")) {
-                    // memory read
-                    num1 = memory;
+                    expression = Double.toString(memory);
                 } else if (str.equals("MS")) {
-                    // memory save
-                    memory = num1;
-                    // 修改标签的文本内容
+                    double temp = 0.0;
+                    try {
+                        memory = evaluateExpression(expression);
+                    } catch (IllegalArgumentException ex) {
+                        isError = true;
+                    }
                     j_memory.setText("M");
                 } else if (str.equals("M+")) {
-                    memory += num1;
+                    double temp = 0.0;
+                    try {
+                        temp = evaluateExpression(expression);
+                    } catch (IllegalArgumentException ex) {
+                        isError = true;
+                    }
+                    memory += temp;
                 } else if (str.equals("M-")) {
-                    memory -= num1;
+                    double temp = 0.0;
+                    try {
+                        temp = evaluateExpression(expression);
+                    } catch (IllegalArgumentException ex) {
+                        isError = true;
+                    }
+                    memory -= temp;
                 } else if (str.equals("C")) {
+                    expression = "";
                     j_textfield.setText("0");
-                    num1 = 0.0;
-                    num2 = 0.0;
-                    str_basic = "0";
+                    return;
                 } else if (str.equals("CE")) {
-                    num1 = 0.0;
-                    str_basic = "0";
-                } else if (str.equals("√")) {
-                    num1 = Math.sqrt(num1);
-                } else if (str.equals("<-")) {
-                    //退格
-                    str_basic = str_basic.substring(0, str_basic.length() - 1);
-                    num1 = Double.parseDouble(str_basic);
-                } else if (str.equals("±")) {
-                    num1 = -(num1);
 
+                } else if (str.equals("√")) {
+                    double temp = 0.0;
+                    try {
+                        temp = evaluateExpression(expression);
+                    } catch (IllegalArgumentException ex) {
+                        isError = true;
+                    }
+                    temp = Math.sqrt(temp);
+                    expression = Double.toString(temp);
+                } else if (str.equals("<-")) {
+                    expression = expression.substring(0, expression.length() - 1);
+                } else if (str.equals("±")) {
+                    double temp = 0.0;
+                    try {
+                        temp = evaluateExpression(expression);
+                    } catch (IllegalArgumentException ex) {
+                        isError = true;
+                    }
+                    temp = -temp;
+                    expression = Double.toString(temp);
                 } else if (str.equals("1/x")) {
-                    num1 = 1.0 / num1;
+                    double temp = 0.0;
+                    try {
+                        temp = evaluateExpression(expression);
+                    } catch (IllegalArgumentException ex) {
+                        j_textfield.setText("Error");
+                    }
+                    if (temp != 0) {
+                        temp = 1.0 / temp;
+                        expression = Double.toString(temp);
+                    } else {
+                        j_textfield.setText("Error");
+                    }
                 } else if (str.equals("=")) {
-                    expression=Double.toString(evaluateExpression(expression));
-//                    if (flag == null) {
-//
-//                    } else if (flag.equals("+")) {
-//                        num1 = num2 + num1;
-//                    } else if (flag.equals("-")) {
-//                        num1 = num2 - num1;
-//                    } else if (flag.equals("*")) {
-//                        num1 = num2 * num1;
-//                    } else if (flag.equals("/")) {
-//                        num1 = num2 / num1;
-//                    } else if (flag.equals("%")) {
-//                        num1 = num2 % num1;
-//                    }
-//                    flag = null;
-                    str_basic = "0";
+                    try {
+                        expression = Double.toString(evaluateExpression(expression));
+                    } catch (IllegalArgumentException ex) {
+                        isError = true;
+                    }
                 } else {
                     expression += str;
-                    //处理输入数字时
-                    str_basic = str_basic + str;
-                    num1 = Double.parseDouble(str_basic);
                 }
-                //无论是哪个按钮，最终始终设置为s1
-                j_textfield.setText(expression);
+                //无论是哪个按钮，最终始终设置为expression
+
+                if (isError) {
+                    j_textfield.setText("Error");
+                } else {
+                    j_textfield.setText(expression);
+                }
             }
         };
 
