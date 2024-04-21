@@ -26,6 +26,7 @@ public class MyCalculate {
     private JButton[] j_buttons;
     private Double memory = 0.0;
     String expression = "";
+
     // 创建 MyCalculate 构造函数
     public MyCalculate() {
         newFrame();
