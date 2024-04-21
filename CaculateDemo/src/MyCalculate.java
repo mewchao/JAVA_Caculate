@@ -121,7 +121,6 @@ public class MyCalculate {
     }
 
     private void addButtons() {
-
         GridBagLayout gbl = new GridBagLayout();
         GridBagConstraints gbs = new GridBagConstraints();
         j_panel2.setLayout(gbl);
