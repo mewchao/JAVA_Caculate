@@ -6,6 +6,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Stack;
 
 import javax.swing.*;
 
@@ -303,34 +304,119 @@ public class MyCalculate {
         }
     }
 
+    private static final String OPERATORS = "+-*/";
+
+    public static double evaluateExpression(String expression) {
+        Stack<String> operatorStack = new Stack<>();
+        Stack<Double> operandStack = new Stack<>();
+
+        expression = expression.replaceAll("\\s", "");
+        String[] tokens = expression.split("(?=[-+*/()])|(?<=[-+*/()])");
+
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+            if (OPERATORS.contains(token)) {
+                if (token.equals("-") && (i == 0 || tokens[i - 1].equals("("))) { // 当"-"作为负号使用时
+                    operandStack.push(0.0);
+                }
+                while (!operatorStack.isEmpty() && getPrecedence(token) <= getPrecedence(operatorStack.peek())) {
+                    String operator = operatorStack.pop();
+                    double operand2 = operandStack.pop();
+                    double operand1 = operandStack.pop();
+                    operandStack.push(calculate(operand1, operand2, operator));
+                }
+                operatorStack.push(token);
+            } else if (token.equals("(")) {
+                operatorStack.push(token);
+            } else if (token.equals(")")) {
+                while (!operatorStack.peek().equals("(")) {
+                    String operator = operatorStack.pop();
+                    double operand2 = operandStack.pop();
+                    double operand1 = operandStack.pop();
+                    operandStack.push(calculate(operand1, operand2, operator));
+                }
+                operatorStack.pop(); // Discard "("
+            } else {
+                operandStack.push(Double.parseDouble(token));
+            }
+        }
+
+        while (!operatorStack.isEmpty()) {
+            String operator = operatorStack.pop();
+            double operand2 = operandStack.pop();
+            double operand1 = operandStack.pop();
+            operandStack.push(calculate(operand1, operand2, operator));
+        }
+
+        return operandStack.pop();
+    }
+
+    private static int getPrecedence(String operator) {
+        if (operator.equals("+") || operator.equals("-")) {
+            return 1;
+        } else if (operator.equals("*") || operator.equals("/")) {
+            return 2;
+        } else {
+            return 0;
+        }
+    }
+
+    private static double calculate(double operand1, double operand2, String operator) {
+        switch (operator) {
+            case "+":
+                return operand1 + operand2;
+            case "-":
+                return operand1 - operand2;
+            case "*":
+                return operand1 * operand2;
+            case "/":
+                if (operand2 != 0) {
+                    return operand1 / operand2;
+                } else {
+                    throw new IllegalArgumentException("Cannot divide by zero");
+                }
+            default:
+                return 0;
+        }
+    }
+
     public void action() {
         ActionListener actionListener_buttons = new ActionListener() {
+            String expression = "";
             @Override
             public void actionPerformed(ActionEvent e) {
                 String str = e.getActionCommand();
                 if (str.equals("+")) {
-                    num2 = num1;
-                    num1 = 0.0;
-                    str_basic = "0";
-                    flag = "+";
-                    num1 = num2 + num1;
+                    expression+="+";
+//                    num2 = num1;
+//                    num1 = 0.0;
+//                    str_basic = "0";
+//                    flag = "+";
+//                    num1 = num2 + num1;
                 } else if (str.equals("-")) {
-                    num2 = num1;
-                    num1 = 0.0;
-                    str_basic = "0";
-                    flag = "-";
-                    num1 = num2 - num1;
+                    expression+="-";
+//                    num2 = num1;
+//                    num1 = 0.0;
+//                    str_basic = "0";
+//                    flag = "-";
+//                    num1 = num2 - num1;
                 } else if (str.equals("*")) {
-                    num2 = num1;
-                    num1 = 0.0;
-                    str_basic = "0";
-                    flag = "*";
-                    num1 = num2 * num1;
+                    expression+="*";
+//                    num2 = num1;
+//                    num1 = 0.0;
+//                    str_basic = "0";
+//                    flag = "*";
+//                    num1 = num2 * num1;
                 } else if (str.equals("/")) {
-                    num2 = num1;
-                    str_basic = "0";
-                    flag = "/";
-                } else if (str.equals("%")) {
+                    expression+="/";
+//                    num2 = num1;
+//                    str_basic = "0";
+//                    flag = "/";
+                } else if (str.equals("(")) {
+                    expression+="(";
+                } else if (str.equals(")")) {
+                    expression+=")";
+                }else if (str.equals("%")) {
                     num2 = num1;
                     str_basic = "0";
                     flag = "%";
@@ -372,29 +458,30 @@ public class MyCalculate {
                 } else if (str.equals("1/x")) {
                     num1 = 1.0 / num1;
                 } else if (str.equals("=")) {
-
-                    if (flag == null) {
-
-                    } else if (flag.equals("+")) {
-                        num1 = num2 + num1;
-                    } else if (flag.equals("-")) {
-                        num1 = num2 - num1;
-                    } else if (flag.equals("*")) {
-                        num1 = num2 * num1;
-                    } else if (flag.equals("/")) {
-                        num1 = num2 / num1;
-                    } else if (flag.equals("%")) {
-                        num1 = num2 % num1;
-                    }
-                    flag = null;
+                    expression=Double.toString(evaluateExpression(expression));
+//                    if (flag == null) {
+//
+//                    } else if (flag.equals("+")) {
+//                        num1 = num2 + num1;
+//                    } else if (flag.equals("-")) {
+//                        num1 = num2 - num1;
+//                    } else if (flag.equals("*")) {
+//                        num1 = num2 * num1;
+//                    } else if (flag.equals("/")) {
+//                        num1 = num2 / num1;
+//                    } else if (flag.equals("%")) {
+//                        num1 = num2 % num1;
+//                    }
+//                    flag = null;
                     str_basic = "0";
                 } else {
+                    expression += str;
                     //处理输入数字时
                     str_basic = str_basic + str;
                     num1 = Double.parseDouble(str_basic);
                 }
                 //无论是哪个按钮，最终始终设置为s1
-                j_textfield.setText(num1 + "");
+                j_textfield.setText(expression);
             }
         };
 
