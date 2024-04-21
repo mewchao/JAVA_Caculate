@@ -24,12 +24,8 @@ public class MyCalculate {
     private JMenu j_helpMenu;
     private JTextField j_textfield;
     private JButton[] j_buttons;
-    private String str_basic = "0";
-    private String flag = null;
-    private double num1 = 0.0;
-    private double num2 = 0.0;
     private Double memory = 0.0;
-
+    String expression = "";
     // 创建 MyCalculate 构造函数
     public MyCalculate() {
         newFrame();
@@ -387,7 +383,6 @@ public class MyCalculate {
 
     public void action() {
         ActionListener actionListener_buttons = new ActionListener() {
-            String expression = "";
 
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -446,7 +441,9 @@ public class MyCalculate {
                     j_textfield.setText("0");
                     return;
                 } else if (str.equals("CE")) {
-
+                    expression = "";
+                    j_textfield.setText("0");
+                    return;
                 } else if (str.equals("√")) {
                     double temp = 0.0;
                     try {
@@ -490,7 +487,6 @@ public class MyCalculate {
                     expression += str;
                 }
                 //无论是哪个按钮，最终始终设置为expression
-
                 if (isError) {
                     j_textfield.setText("Error");
                 } else {
@@ -517,8 +513,8 @@ public class MyCalculate {
                     try {
                         // 从Transferable对象中获取文本并将其粘贴到应用程序中
                         String text = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-                        num1 = Double.parseDouble(text);
-                        j_textfield.setText(num1 + "");
+                        expression = text;
+                        j_textfield.setText(text);
                     } catch (UnsupportedFlavorException | IOException ee) {
                         ee.printStackTrace();
                     }
@@ -531,7 +527,7 @@ public class MyCalculate {
         ActionListener actionListener_copy = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String textToCopy = Double.toString(num1);
+                String textToCopy = expression;
 
                 // 创建StringSelection对象，用于保存要复制的文本
                 StringSelection stringSelection = new StringSelection(textToCopy);
