@@ -81,7 +81,7 @@ public class MyCalculate {
 
     private void newButtons() {
         // 为按钮数组赋值
-        j_buttons = new JButton[28];
+        j_buttons = new JButton[30];
         // 逐个创建 JButton 对象，文本内容为对应位置的字符
         j_buttons[0] = new JButton("MC");
         j_buttons[1] = new JButton("MR");
@@ -112,6 +112,9 @@ public class MyCalculate {
         j_buttons[26] = new JButton(".");
         j_buttons[27] = new JButton("+");
 
+        j_buttons[28] = new JButton("(");
+        j_buttons[29] = new JButton(")");
+
         // 设置按钮的字体大小
         Font buttonFont = new Font("Arial", Font.BOLD, 14);
         for (int i = 0; i < j_buttons.length; i++) {
@@ -125,10 +128,9 @@ public class MyCalculate {
         GridBagConstraints gbs = new GridBagConstraints();
         j_panel2.setLayout(gbl);
 
-        for (int i = 0; i < 28; i++) {
+        for (int i = 0; i < 30; i++) {
                 j_panel2.add(j_buttons[i]);
         }
-
 
         gbs.weightx = 1.0;
         gbs.weighty = 1.0;
@@ -257,6 +259,24 @@ public class MyCalculate {
         gbs.gridx = 3;
         gbs.gridy = 5;
         gbl.setConstraints(j_buttons[27], gbs);
+
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 3;
+        gbs.gridheight = 1;
+        gbs.gridx = 0;
+        gbs.gridy = 6;
+        gbl.setConstraints(j_buttons[28], gbs);
+
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 3;
+        gbs.gridheight = 1;
+        gbs.gridx = 3;
+        gbs.gridy = 6;
+        gbl.setConstraints(j_buttons[29], gbs);
 
         j_frame.add(j_panel1, BorderLayout.NORTH);
         j_frame.add(j_panel2, BorderLayout.CENTER);
