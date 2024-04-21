@@ -2,7 +2,10 @@ import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.net.URI;
 
 import javax.swing.*;
 
@@ -78,7 +81,7 @@ public class MyCalculate {
 
     private void newButtons() {
         // 为按钮数组赋值
-        j_buttons = new JButton[29];
+        j_buttons = new JButton[28];
         // 逐个创建 JButton 对象，文本内容为对应位置的字符
         j_buttons[0] = new JButton("MC");
         j_buttons[1] = new JButton("MR");
@@ -106,9 +109,8 @@ public class MyCalculate {
         j_buttons[23] = new JButton("-");
         j_buttons[24] = new JButton("=");
         j_buttons[25] = new JButton("0");
-        j_buttons[26] = new JButton("0");
-        j_buttons[27] = new JButton(".");
-        j_buttons[28] = new JButton("+");
+        j_buttons[26] = new JButton(".");
+        j_buttons[27] = new JButton("+");
 
         // 设置按钮的字体大小
         Font buttonFont = new Font("Arial", Font.BOLD, 14);
@@ -120,80 +122,141 @@ public class MyCalculate {
     private void addButtons() {
 
         GridBagLayout gbl = new GridBagLayout();
+        GridBagConstraints gbs = new GridBagConstraints();
         j_panel2.setLayout(gbl);
-        GridBagConstraints gbc = new GridBagConstraints();
 
-        // 设置weightx和weighty属性
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
+        for (int i = 0; i < 28; i++) {
+                j_panel2.add(j_buttons[i]);
+        }
 
-        // 设置fill属性为BOTH
-        gbc.fill = GridBagConstraints.BOTH;
 
-        gbc.gridwidth = 1;
-        // 添加按钮
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 1;
+        gbs.gridheight = 1;
         for (int i = 0; i < 4; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl, gbc);
+            gbs.gridx = i;
+            gbs.gridy = 0;
+            gbl.setConstraints(j_buttons[i], gbs);
         }
 
-        //把GridBagConstraints的gridwidth设置为GridBagConstraints.REMAINDER,则表明当前组件是横向最后一个组件
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        // 添加按钮
-        addComponent(j_panel2, j_buttons[4], gbl, gbc);
 
-        gbc.gridwidth = 1;
-        // 添加按钮
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = GridBagConstraints.REMAINDER;
+        gbs.gridheight = 1;
+        gbs.gridx = 4;
+        gbs.gridy = 0;
+        gbl.setConstraints(j_buttons[4], gbs);
+
+
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 1;
+        gbs.gridheight = 1;
         for (int i = 5; i < 9; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl, gbc);
+            gbs.gridx = i - 5;
+            gbs.gridy = 1;
+            gbl.setConstraints(j_buttons[i], gbs);
         }
 
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        addComponent(j_panel2, j_buttons[9], gbl, gbc);
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = GridBagConstraints.REMAINDER;
+        gbs.gridheight = 1;
+        gbs.gridx = 4;
+        gbs.gridy = 1;
+        gbl.setConstraints(j_buttons[9], gbs);
 
-        gbc.gridwidth = 1;
-        // 添加按钮
+
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 1;
+        gbs.gridheight = 1;
         for (int i = 10; i < 14; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl, gbc);
+            gbs.gridx = i - 10;
+            gbs.gridy = 2;
+            gbl.setConstraints(j_buttons[i], gbs);
         }
 
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        addComponent(j_panel2, j_buttons[14], gbl, gbc);
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = GridBagConstraints.REMAINDER;
+        gbs.gridheight = 1;
+        gbs.gridx = 4;
+        gbs.gridy = 2;
+        gbl.setConstraints(j_buttons[14], gbs);
 
-        gbc.gridwidth = 1;
-        // 添加按钮
+
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 1;
+        gbs.gridheight = 1;
         for (int i = 15; i < 19; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl, gbc);
+            gbs.gridx = i - 15;
+            gbs.gridy = 3;
+            gbl.setConstraints(j_buttons[i], gbs);
         }
 
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        addComponent(j_panel2, j_buttons[19], gbl, gbc);
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = GridBagConstraints.REMAINDER;
+        gbs.gridheight = 1;
+        gbs.gridx = 4;
+        gbs.gridy = 3;
+        gbl.setConstraints(j_buttons[19], gbs);
 
-        gbc.gridwidth = 1;
-        // 添加按钮
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 1;
+        gbs.gridheight = 1;
         for (int i = 20; i < 24; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl, gbc);
+            gbs.gridx = i - 20;
+            gbs.gridy = 4;
+            gbl.setConstraints(j_buttons[i], gbs);
         }
 
-        gbc.gridwidth = GridBagConstraints.REMAINDER;
-        gbc.gridheight = 2;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.VERTICAL; // 垂直填充
-        gbc.anchor = GridBagConstraints.CENTER; // 居中对齐
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = GridBagConstraints.REMAINDER;
+        gbs.gridheight = 2;
+        gbs.gridx = 4;
+        gbs.gridy = 4;
+        gbl.setConstraints(j_buttons[24], gbs);
 
-        // 添加按钮
-        addComponent(j_panel2, j_buttons[24], gbl, gbc);
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 2;
+        gbs.gridheight = 1;
+        gbs.gridx = 0;
+        gbs.gridy = 5;
+        gbl.setConstraints(j_buttons[25], gbs);
 
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        // 添加按钮
-        for (int i = 25; i < 28; i++) {
-            addComponent(j_panel2, j_buttons[i], gbl, gbc);
+        gbs.weightx = 1.0;
+        gbs.weighty = 1.0;
+        gbs.fill = GridBagConstraints.BOTH;
+        gbs.gridwidth = 1;
+        gbs.gridheight = 1;
+        for (int i = 26; i < 27; i++) {
+            gbs.gridx = i - 24;
+            gbs.gridy = 5;
+            gbl.setConstraints(j_buttons[i], gbs);
         }
-        addComponent(j_panel2, j_buttons[28], gbl, gbc);
+
+        gbs.gridx = 3;
+        gbs.gridy = 5;
+        gbl.setConstraints(j_buttons[27], gbs);
 
         j_frame.add(j_panel1, BorderLayout.NORTH);
         j_frame.add(j_panel2, BorderLayout.CENTER);
@@ -362,16 +425,39 @@ public class MyCalculate {
 
         copyItem.addActionListener(actionListener_copy);
 
-        aboutItem.addActionListener(new ActionListener() {
+
+        ActionListener actionListener_about = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(j_frame, "这是一个警示消息！", "警告", JOptionPane.WARNING_MESSAGE);
+                // 显示普通消息框
+                String message = "Author:  Youjunchao\nSno:       222200231\nversion: 1.0";
+                JOptionPane.showMessageDialog(j_frame, message, "关于计算器", JOptionPane.PLAIN_MESSAGE);
+            }
+        };
+
+        aboutItem.addActionListener(actionListener_about);
+
+
+        JLabel hyperlink = new JLabel("<html><u>点击这里查看官方教程</u></html>");
+        hyperlink.setForeground(Color.BLUE);
+        hyperlink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        hyperlink.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    Desktop.getDesktop().browse(new URI("https://docs.oracle.com/javase/tutorial/uiswing/"));
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
             }
         });
-    }
 
-    public static void addComponent(Container container, Component c, GridBagLayout gridBagLayout, GridBagConstraints gridBagConstraints) {
-        gridBagLayout.setConstraints(c, gridBagConstraints);
-        container.add(c);
+        ActionListener actionListener_view = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JOptionPane.showMessageDialog(j_frame, hyperlink, "查看帮助", JOptionPane.PLAIN_MESSAGE);
+            }
+        };
+        viewItem.addActionListener(actionListener_view);
     }
 }
