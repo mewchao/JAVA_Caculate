@@ -57,7 +57,6 @@ public class MyCalculate {
         viewItem = new JMenuItem("查看帮助");
         aboutItem = new JMenuItem("关于计算器");
 
-
         j_textfield.setEditable(true);
         j_textfield.setText("0");
         j_panel1.setLayout(new FlowLayout());
@@ -124,7 +123,6 @@ public class MyCalculate {
         j_panel2.setLayout(gbl);
         GridBagConstraints gbc = new GridBagConstraints();
 
-
         // 设置weightx和weighty属性
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
@@ -178,14 +176,19 @@ public class MyCalculate {
 
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         gbc.gridheight = 2;
-        gbc.fill = GridBagConstraints.BOTH;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.VERTICAL; // 垂直填充
+        gbc.anchor = GridBagConstraints.CENTER; // 居中对齐
+
         // 添加按钮
         addComponent(j_panel2, j_buttons[24], gbl, gbc);
 
         gbc.gridwidth = 1;
         gbc.gridheight = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
-
         // 添加按钮
         for (int i = 25; i < 28; i++) {
             addComponent(j_panel2, j_buttons[i], gbl, gbc);
